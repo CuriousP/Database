@@ -1,0 +1,66 @@
+15.
+Access Permissions:
+I will control the access permissions using Roles.
+I will create roles for different departments e.g. : Legal, Campaign Management etc.
+Then I will assign each user to respective roles.
+Also I can control access permission on individual person
+Following are the examples of how I will implement the access rights for each individual person
+
+Any staffer can access voter, candidate, and proposition info. 
+For all the staffers I will add the permissions to access these tables using the following Grant statements:
+	User: Frazzled
+	GRANT SELECT ON VOTER  TO Frazzled
+	GRANT SELECT ON CANDIDATE  TO Frazzled
+	GRANT SELECT ON PROPOSITION  TO Frazzled
+	
+	Role: Staffer (Includes all users)
+	GRANT SELECT ON VOTER  TO Staffer
+	GRANT SELECT ON CANDIDATE  TO Staffer
+	GRANT SELECT ON PROPOSITION  TO Staffer
+	
+Any staffer can enter survey info
+For all the staffers I will add the permissions to insert in the Voter_Proposition table:
+	User: Frazzled
+	GRANT INSERT ON VOTER_PROPOSITION TO Frazzled
+	 
+Any staffer can see event info, but not who is there. 
+For all the staffers I will add the permissions to see Staff_Itinerary table columns except Staffer_Name and Contact_Phone columns:
+	User: Frazzled
+	GRANT SELECT (LOCATION, EVENT_DATE, EVENT_TIME, EVENT) ON STAFF_ITINERARY TO Frazzled
+	
+Legal can access and change donor records. 
+For a Legal department user, I will add permissions to select and update the donor records:
+	User: Slithering
+	GRANT SELECT, UPDATE ON DONOR TO Slithering
+	
+Campaign management can see donor info. 
+For all the campaign managers I will add the permissions to see the donor information
+	User: Devious
+	GRANT SELECT ON DONOR TO Devious
+	
+Campaign management can see and update staff itinerary, and candidate info. 
+For all campaign managers I will add the permissions to see and update the staff itinerary and candidate info:
+	User: Devious
+	GRANT SELECT, UPDATE ON STAFF_ITINERARY TO Devious
+	GRANT SELECT, UPDATE ON CANDIDATE TO Devious
+	
+Campaign management can add categories 
+For all campaign managers I will add the permissions to insert new categories:
+	User: Devious
+	GRANT INSERT ON CATEGORY TO Devious
+	
+Only campaign management can see and update vendor payments. 
+For all campaign managers I will add the permissions to see and update vendor payments:
+	User: Devious
+	GRANT SELECT, UPDATE ON VENDOR_PAYMENT TO Devious
+
+16.
+The constraints shown in the ERD are implemented using the Primary Key constraints, Composite key constraints, Foreign key constraints and Sequences.
+Indexes are created as required. In Oracle when an index is created it is a BTree index by default.
+
+Challenges faced using SQLPlus:
+a. We cannot have a column name as 'Date'. 
+Hence I used a column name as Event_Date in Staff_Itinerary table and Payment_Date in Vendor_Payment table.
+
+b. SQLPlus does not allow AutoIncrement for unique keys.
+Hence I used Oracle Sequences for the primary key in VOTER table.
